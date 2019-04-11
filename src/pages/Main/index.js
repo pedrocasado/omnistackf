@@ -1,0 +1,44 @@
+import React, { Component } from 'react'
+import './styles.css'
+import logo from '../../assets/logo.svg'
+import api from '../../services/api'
+
+export default class Main extends Component {
+    state = {
+        newBox: '',
+    }
+
+    handleSubmit = async e => {
+        e.preventDefault()
+
+        const response = await api.post('/boxes', {
+            title: this.state.newBox,
+        })
+
+        // navigate user to another route
+        this.props.history.push(`/box/${response.data._id}`)
+    }
+
+    handleInputChange = e => {
+        // input value
+        this.setState({ newBox: e.target.value })
+    }
+
+    render() {
+        return (
+            <div id="main-container">
+                <form onSubmit={this.handleSubmit}>
+                    <img src={logo} alt="" />
+
+                    <input
+                        placeholder="Criar pasta"
+                        value={this.state.newBox}
+                        onChange={this.handleInputChange}
+                    />
+
+                    <button type="submit">Criar</button>
+                </form>
+            </div>
+        )
+    }
+}
